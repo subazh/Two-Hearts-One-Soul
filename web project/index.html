@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subazh Raj ❤️ Shamliy</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --pink: #ff6b9d;
+    --rose: #ff4081;
+    --deep: #c2185b;
+    --light: #fce4ec;
+    --white: #fff8f9;
+    --gold: #ffb347;
+  }
+  body { font-family: 'Poppins', sans-serif; background: var(--white); overflow-x: hidden; }
+
+  /* ===== LOADER ===== */
+  #loader {
+    position: fixed; inset: 0; z-index: 9999;
+    background: linear-gradient(135deg, #ff6b9d, #c2185b, #ff4081);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 0.8s ease;
+  }
+  #loader.fade-out { opacity: 0; pointer-events: none; }
+  .loader-heart {
+    font-size: 60px; animation: loaderPulse 0.8s infinite alternate;
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.8));
+  }
+  .loader-text {
+    font-family: 'Dancing Script', cursive; color: white;
+    font-size: 1.8rem; margin-top: 20px; opacity: 0;
+    animation: fadeInUp 1s 0.5s forwards;
+  }
+  @keyframes loaderPulse { from { transform: scale(1); } to { transform: scale(1.3); } }
+  @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ===== PAGE 1 ===== */
+  #page1 {
+    position: fixed; inset: 0; z-index: 100;
+    background: linear-gradient(135deg, #ffe0ec, #ffc2d4, #ffb3ba, #ffd6e0);
+    background-size: 400% 400%; animation: bgShift 8s ease infinite;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  #page1.exit { opacity: 0; transform: scale(1.05); pointer-events: none; }
+  @keyframes bgShift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+
+  .names-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--deep);
+    text-shadow: 0 2px 20px rgba(194,24,91,0.3);
+    text-align: center; padding: 0 20px;
+    animation: fadeInUp 1s 0.3s both;
+  }
+  .glowing-heart {
+    font-size: clamp(3rem, 8vw, 5rem);
+    animation: glowPulse 1.5s infinite;
+    display: block; text-align: center; margin: 10px 0;
+  }
+  @keyframes glowPulse {
+    0%,100% { transform: scale(1); filter: drop-shadow(0 0 10px #ff4081); }
+    50% { transform: scale(1.2); filter: drop-shadow(0 0 30px #ff4081) drop-shadow(0 0 50px #c2185b); }
+  }
+
+  .heart-btn-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    margin-top: 40px; cursor: pointer; animation: fadeInUp 1s 0.8s both;
+  }
+  .heart-btn {
+    width: 100px; height: 100px; background: none; border: none;
+    font-size: 80px; cursor: pointer; animation: heartPulse 1.2s infinite;
+    line-height: 1; display: block; transition: transform 0.1s;
+    filter: drop-shadow(0 0 15px rgba(255,64,129,0.6));
+  }
+  .heart-btn:active { transform: scale(0.9); }
+  @keyframes heartPulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+  .tap-text {
+    font-family: 'Dancing Script', cursive; color: var(--deep);
+    font-size: 1.2rem; margin-top: 12px; opacity: 0.8;
+  }
+
+  /* Floating hearts bg */
+  .float-hearts { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+  .fh {
+    position: absolute; font-size: 20px; animation: floatUp linear infinite;
+    opacity: 0.4;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0.4; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+  }
+
+  /* ===== PAGE 2 ===== */
+  #page2 {
+    display: none; min-height: 100vh;
+    background: linear-gradient(160deg, #fff0f5 0%, #ffe4ec 30%, #ffd6e8 60%, #fff0f5 100%);
+  }
+  #page2.show { display: block; }
+
+  /* Particles */
+  #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+
+  /* Music player */
+  #music-bar {
+    position: fixed; bottom: 20px; right: 20px; z-index: 500;
+    background: rgba(255,64,129,0.95); backdrop-filter: blur(10px);
+    border-radius: 50px; padding: 12px 20px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 4px 30px rgba(255,64,129,0.4);
+    color: white; font-size: 13px;
+  }
+  #play-pause-btn {
+    background: white; border: none; border-radius: 50%;
+    width: 36px; height: 36px; cursor: pointer;
+    font-size: 14px; display: flex; align-items: center; justify-content: center;
+    color: var(--rose); flex-shrink: 0;
+  }
+  .music-note { animation: noteDance 1s infinite alternate; }
+  @keyframes noteDance { from { transform: rotate(-15deg); } to { transform: rotate(15deg); } }
+
+  /* Section styles */
+  .section { position: relative; z-index: 10; padding: 60px 20px; }
+  .section-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--deep); text-align: center;
+    margin-bottom: 40px;
+    text-shadow: 0 2px 15px rgba(194,24,91,0.2);
+  }
+
+  /* ===== SLIDESHOW ===== */
+  #slideshow-section {
+    background: linear-gradient(135deg, rgba(255,192,203,0.3), rgba(255,182,193,0.2));
+    padding: 60px 20px;
+  }
+  .slideshow-container {
+    max-width: 500px; margin: 0 auto;
+    border-radius: 24px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(194,24,91,0.25);
+    position: relative; aspect-ratio: 3/4;
+    border: 3px solid rgba(255,64,129,0.3);
+  }
+  .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; }
+  .slide.active { opacity: 1; }
+  .slide img { width: 100%; height: 100%; object-fit: cover; }
+  .slide-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(194,24,91,0.7));
+    padding: 30px 20px 20px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .slide-counter {
+    color: white; font-family: 'Dancing Script', cursive;
+    font-size: 1.2rem;
+  }
+
+  /* ===== LYRICS ===== */
+  #lyrics-section {
+    background: linear-gradient(135deg, rgba(255,64,129,0.08), rgba(194,24,91,0.05));
+    padding: 60px 20px; text-align: center;
+  }
+  .lyrics-box {
+    max-width: 600px; margin: 0 auto;
+    background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
+    border-radius: 24px; padding: 40px 30px;
+    box-shadow: 0 10px 40px rgba(255,64,129,0.15);
+    border: 1px solid rgba(255,64,129,0.2);
+  }
+  .lyric-line {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    color: #888; transition: all 0.5s ease; padding: 6px 0;
+    line-height: 1.6;
+  }
+  .lyric-line.active {
+    color: var(--deep); font-size: clamp(1.3rem, 4vw, 1.9rem);
+    text-shadow: 0 2px 15px rgba(194,24,91,0.3);
+  }
+  .lyric-line.prev { color: #bbb; font-size: clamp(1rem, 2.5vw, 1.3rem); }
+
+  /* ===== MEMORIES GRID ===== */
+  #memories-section { padding: 60px 20px; }
+  .memories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px; max-width: 1100px; margin: 0 auto;
+  }
+  .memory-card {
+    background: white; border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(255,64,129,0.12);
+    border: 1px solid rgba(255,182,193,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  .memory-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(255,64,129,0.3);
+  }
+  .memory-img-wrap { overflow: hidden; aspect-ratio: 3/4; position: relative; }
+  .memory-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+  .memory-card:hover .memory-img-wrap img { transform: scale(1.08); }
+  .memory-caption {
+    padding: 18px 16px; text-align: center;
+    border-top: 1px solid rgba(255,182,193,0.3);
+    background: linear-gradient(135deg, #fff8fa, #ffe4ec);
+  }
+  .memory-caption p {
+    font-family: 'Dancing Script', cursive; color: var(--deep);
+    font-size: clamp(0.95rem, 2.5vw, 1.15rem); line-height: 1.5;
+  }
+  .memory-icon { font-size: 1.2rem; margin-bottom: 4px; display: block; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: linear-gradient(135deg, var(--deep), var(--rose));
+    color: white; text-align: center;
+    padding: 40px 20px; position: relative; z-index: 10;
+  }
+  .footer-text {
+    font-family: 'Dancing Script', cursive; font-size: clamp(1.5rem, 4vw, 2.5rem);
+    animation: glowPulse 2s infinite;
+  }
+
+  /* ===== HEART BURST ===== */
+  .burst-heart {
+    position: fixed; pointer-events: none; z-index: 9999;
+    font-size: 24px; animation: burst 1s ease-out forwards;
+  }
+  @keyframes burst {
+    0% { transform: translate(-50%,-50%) scale(0); opacity: 1; }
+    100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.5); opacity: 0; }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    .memories-grid { grid-template-columns: 1fr; }
+    .slideshow-container { max-width: 95vw; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-heart">💖</div>
+  <div class="loader-text">Loading our love story...</div>
+</div>
+
+<!-- FLOATING HEARTS (PAGE 1 BG) -->
+<div class="float-hearts" id="floatHearts"></div>
+
+<!-- PAGE 1 -->
+<div id="page1">
+  <div style="position:relative;z-index:10;text-align:center;padding:20px;">
+    <h1 class="names-title">Subazh Raj</h1>
+    <span class="glowing-heart">❤️</span>
+    <h1 class="names-title">Shamliy</h1>
+    <div class="heart-btn-wrap" onclick="enterPage2()">
+      <button class="heart-btn" aria-label="Enter our love story">💗</button>
+      <span class="tap-text">Tap the heart to begin</span>
+    </div>
+  </div>
+</div>
+
+<!-- PARTICLES -->
+<div id="particles"></div>
+
+<!-- PAGE 2 -->
+<div id="page2">
+
+  <!-- SLIDESHOW -->
+  <div id="slideshow-section" class="section">
+    <h2 class="section-title">✨ Our Love Story ✨</h2>
+    <div class="slideshow-container" id="slideshow">
+      <!-- slides injected by JS -->
+    </div>
+  </div>
+
+  <!-- LYRICS -->
+  <div id="lyrics-section" class="section">
+    <h2 class="section-title">🎶 Dheema — Our Song 🎶</h2>
+    <div class="lyrics-box" id="lyricsBox">
+      <p class="lyric-line active" id="lyric-prev"></p>
+      <p class="lyric-line active" id="lyric-curr">♫ Press play to sing along ♫</p>
+      <p class="lyric-line" id="lyric-next"></p>
+    </div>
+  </div>
+
+  <!-- MEMORIES -->
+  <div id="memories-section" class="section">
+    <h2 class="section-title">💝 Our Beautiful Memories 💝</h2>
+    <div class="memories-grid" id="memoriesGrid"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-text">Forever Yours ❤️</p>
+    <p style="margin-top:10px;font-size:0.9rem;opacity:0.8;">Subazh Raj & Shamliy — Always & Forever</p>
+  </footer>
+</div>
+
+<!-- MUSIC BAR -->
+<div id="music-bar" style="display:none;">
+  <span class="music-note" style="font-size:18px;">🎵</span>
+  <span style="font-family:'Dancing Script',cursive;font-size:1rem;">Dheema</span>
+  <button id="play-pause-btn" onclick="toggleMusic()" aria-label="Play/Pause">▶</button>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="Dheema - Love Insurance Kompany_128-(PagalWorld.Org.Im).mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const images = [
+  "s1.png","s2.png","s3.png","s4.png","s5.png","s6.png","s7.png","s8.png",
+  "s9.png","s10.jpg","s11.jpg","s12.png","s13.png","s14.png","s15.png","s16.png","s17.png","s18.png",
+];
+
+const promises = [
+  "I promise to love you more with every sunrise ☀️",
+  "Your smile is my favourite thing in the world 😊",
+  "I will hold your hand through every storm 🌧️",
+  "You are my home, my heart, my everything 🏠",
+  "Every moment with you is a blessing 🌸",
+  "I choose you today, tomorrow and always 💍",
+  "With you, every day feels like a fairytale 🌟",
+  "I promise to make you laugh every single day 😂",
+  "You are the song my heart sings 🎵",
+  "My love for you grows deeper every day 🌹",
+  "I promise to be your safe place forever 🤗",
+  "You are the best thing that ever happened to me 💖",
+  "I will walk beside you wherever life leads 🚶‍♂️🚶‍♀️",
+  "Your happiness is my purpose 🦋",
+  "Together we are unstoppable ⭐",
+  "I love every version of you, always 💕",
+  "You complete my story in the most beautiful way 📖",
+  "I promise forever is not long enough with you 🌙"
+];
+
+const lyricsData = [
+  {time:1,text:"Dheema dheema dheema dheema"},
+  {time:4,text:"Dheema dheema"},
+  {time:8,text:"Irudhayakkoottai idiththavalae"},
+  {time:15,text:"En petrorkku chella marumagalae"},
+  {time:23,text:"Un pakkaththula naan padukka vazhi sollammaa"},
+  {time:31,text:"Un raththaththula peththedukka vidhi vidummaa"},
+  {time:38,text:"Dheema dheema dheema dheema"},
+  {time:41,text:"Dheema dheema"},
+  {time:45,text:"Dheema dheema dheema dheema"},
+  {time:48,text:"Dheema dheema"},
+  {time:52,text:"Dheema dheema dheema dheema"},
+  {time:56,text:"Dheema dheema dheema dheema dheema"},
+  {time:60,text:"Dheema dheema dheema dheema"},
+  {time:63,text:"Dheema dheema dheema dheema dheema"},
+  {time:67,text:"Dheema dheema dheema dheema"},
+  {time:70,text:"Dheema dheema"},
+  {time:74,text:"Dheema dheema dheema dheema"},
+  {time:78,text:"Dheema dheema"},
+  {time:126,text:"Mmm oor naduvinil oar theruvinil"},
+  {time:130,text:"Mazhai varumena unai tharumena"},
+  {time:134,text:"Nee amaiththidum veetukul ulla poochchedigalin"},
+  {time:137,text:"Surul mudiyudan iru magangalai"},
+  {time:141,text:"Kada kadavena kavidhaigalena"},
+  {time:145,text:"Marumurai irumurai un piraviyae kidaikkanum"},
+  {time:148,text:"Avargalukkumae un mugam konda"},
+  {time:152,text:"Anaivarum azhagiya suyappadangalai edukkavae"},
+  {time:156,text:"Un pakkaththula naan padukka vazhi sollammaa"},
+  {time:163,text:"Un raththaththula peththedukka vidhi vidummaa"},
+  {time:170,text:"Dheema dheema dheema dheema"},
+  {time:173,text:"Dheema dheema"},
+  {time:177,text:"Dheema dheema dheema dheema"},
+  {time:180,text:"Dheema dheema"},
+  {time:210,text:"Dheema dheema dheema dheema dheema"}
+];
+
+// ---- LOADER ----
+setTimeout(() => {
+  document.getElementById('loader').classList.add('fade-out');
+  setTimeout(() => document.getElementById('loader').style.display='none', 800);
+}, 2200);
+
+// ---- FLOATING HEARTS (page 1) ----
+function createFloatHearts() {
+  const container = document.getElementById('floatHearts');
+  const emojis = ['❤️','💕','💖','💗','💓','💞','🌸','✨'];
+  setInterval(() => {
+    const h = document.createElement('div');
+    h.className = 'fh';
+    h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.animationDuration = (4 + Math.random()*6) + 's';
+    h.style.fontSize = (14 + Math.random()*18) + 'px';
+    h.style.animationDelay = '0s';
+    container.appendChild(h);
+    setTimeout(() => h.remove(), 10000);
+  }, 400);
+}
+createFloatHearts();
+
+// ---- ENTER PAGE 2 ----
+function enterPage2() {
+  document.getElementById('page1').classList.add('exit');
+  setTimeout(() => {
+    document.getElementById('page1').style.display = 'none';
+    document.getElementById('page2').classList.add('show');
+    document.getElementById('music-bar').style.display = 'flex';
+    initPage2();
+    startParticles();
+    const audio = document.getElementById('bgMusic');
+    audio.play().catch(()=>{});
+    document.getElementById('play-pause-btn').textContent = '⏸';
+  }, 900);
+}
+
+// ---- PAGE 2 INIT ----
+function initPage2() {
+  buildSlideshow();
+  buildMemories();
+}
+
+// ---- SLIDESHOW ----
+let slideIndex = 0;
+function buildSlideshow() {
+  const ss = document.getElementById('slideshow');
+  const slideshowImages = images.slice(0, 12);
+  slideshowImages.forEach((src, i) => {
+    const div = document.createElement('div');
+    div.className = 'slide' + (i===0?' active':'');
+    div.innerHTML = `<img src="${src}" alt="Our memory ${i+1}" loading="lazy">
+      <div class="slide-overlay"><span class="slide-counter">💕 ${i+1} / ${slideshowImages.length} 💕</span></div>`;
+    ss.appendChild(div);
+  });
+  setInterval(() => {
+    const slides = document.querySelectorAll('.slide');
+    slides[slideIndex].classList.remove('active');
+    slideIndex = (slideIndex+1) % slides.length;
+    slides[slideIndex].classList.add('active');
+  }, 4500);
+}
+
+// ---- MEMORIES ----
+function buildMemories() {
+  const grid = document.getElementById('memoriesGrid');
+  images.forEach((src, i) => {
+    const card = document.createElement('div');
+    card.className = 'memory-card';
+    card.innerHTML = `
+      <div class="memory-img-wrap">
+        <img src="${src}" alt="Memory ${i+1}" loading="lazy">
+      </div>
+      <div class="memory-caption">
+        <span class="memory-icon">💖</span>
+        <p>${promises[i % promises.length]}</p>
+      </div>`;
+    card.addEventListener('click', e => heartBurst(e));
+    grid.appendChild(card);
+  });
+}
+
+// ---- MUSIC ----
+let playing = false;
+function toggleMusic() {
+  const audio = document.getElementById('bgMusic');
+  const btn = document.getElementById('play-pause-btn');
+  if (audio.paused) { audio.play(); btn.textContent='⏸'; playing=true; }
+  else { audio.pause(); btn.textContent='▶'; playing=false; }
+}
+
+// ---- LYRICS SYNC ----
+let lastLyricIdx = -1;
+function updateLyrics(currentTime) {
+  let idx = -1;
+  for (let i = 0; i < lyricsData.length; i++) {
+    if (currentTime >= lyricsData[i].time) idx = i;
+    else break;
+  }
+  if (idx === lastLyricIdx) return;
+  lastLyricIdx = idx;
+  const prev = document.getElementById('lyric-prev');
+  const curr = document.getElementById('lyric-curr');
+  const next = document.getElementById('lyric-next');
+  prev.textContent = idx > 0 ? lyricsData[idx-1].text : '';
+  curr.textContent = idx >= 0 ? lyricsData[idx].text : '♫ Listen to our song ♫';
+  next.textContent = idx < lyricsData.length-1 ? lyricsData[idx+1].text : '';
+  prev.className='lyric-line prev';
+  curr.className='lyric-line active';
+  next.className='lyric-line';
+}
+document.getElementById('bgMusic').addEventListener('timeupdate', e => {
+  updateLyrics(e.target.currentTime);
+});
+
+// ---- PARTICLES ----
+function startParticles() {
+  const container = document.getElementById('particles');
+  const emojis = ['❤️','💕','✨','🌸','💖','⭐','💫','🌟'];
+  setInterval(() => {
+    const p = document.createElement('div');
+    p.style.cssText = `position:absolute;left:${Math.random()*100}vw;top:${Math.random()*100}vh;
+      font-size:${10+Math.random()*16}px;opacity:0.35;pointer-events:none;
+      animation:floatUp ${5+Math.random()*5}s linear forwards;`;
+    p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    container.appendChild(p);
+    setTimeout(() => p.remove(), 10000);
+  }, 600);
+}
+
+// ---- HEART BURST ----
+function heartBurst(e) {
+  const x = e.clientX, y = e.clientY;
+  for (let i = 0; i < 8; i++) {
+    const h = document.createElement('div');
+    h.className = 'burst-heart';
+    const angle = (i/8)*Math.PI*2;
+    const dist = 60 + Math.random()*40;
+    h.style.cssText = `left:${x}px;top:${y}px;--dx:${Math.cos(angle)*dist}px;--dy:${Math.sin(angle)*dist}px;`;
+    h.textContent = ['❤️','💕','💖'][Math.floor(Math.random()*3)];
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 1000);
+  }
+}
+document.addEventListener('click', heartBurst);
+
+// ---- SMOOTH SCROLL ----
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
